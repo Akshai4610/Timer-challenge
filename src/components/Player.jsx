@@ -1,21 +1,20 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+
 export default function Player() {
-  const [btnEnable, setEnable] = useState(false);
-  const [playerName, setPlayerName] = useState();
-  
-  function playerChange(event) {
-    setEnable(false)
-    setPlayerName(event.target.value);
-  }
+  const playerName = useRef();
+
+  const [currentPlayer, setPlayerName] = useState(null);
   
   function btnClicked() {
-    setEnable(true);
+    setPlayerName(playerName.current.value);
+    playerName.current.value=''
   }
+  
   return (
     <section id="player">
-      <h2>Welcome {btnEnable ? playerName  : "unknown entity"}</h2>
+      <h2>Welcome {currentPlayer ?? 'unknown entity'}</h2>
       <p>
-        <input type="text" onChange={playerChange} defaultValue={playerName} />
+        <input ref={playerName} type="text" />
         <button onClick={btnClicked}>Set Name</button>
       </p>
     </section>
