@@ -7,29 +7,36 @@ export default function TimerChallenge({ title, targetedTime }) {
 
   const [timeRemaining, setTimeRemaining] = useState(targetedTime * 1000);
 
-    const timeActive=timeRemaining>0 && timeRemaining<targetedTime * 1000
+  const timeActive = timeRemaining > 0 && timeRemaining < targetedTime * 1000;
 
-    if (timeRemaining<=0) {
-        clearInterval(timer.current)
-        setTimeRemaining(targetedTime * 1000)
-        dialog.current.open()
-    }
+  if (timeRemaining <= 0) {
+    clearInterval(timer.current);
+    dialog.current.open();
+  }
+
+  const timeComplete=()=>setTimeRemaining(targetedTime * 1000);
 
   function startTime() {
     timer.current = setInterval(() => {
       setTimeRemaining((prevTime) => prevTime - 10);
-    }, 10);     //default execution time
+    }, 10); //default execution time
     setTime(true);
   }
 
   function stopTime() {
     clearInterval(timer.current);
-    dialog.current.open()
+    dialog.current.open();
   }
 
   return (
     <>
-      <ResultLog ref={dialog} targetTime={targetedTime} result="Lost" />
+      <ResultLog
+        ref={dialog}
+        targetTime={targetedTime}
+        result="Lost"
+        timeRemaining={timeRemaining}
+        timeComplete={timeComplete}
+      />
       <section className="challenge">
         <h2>{title}</h2>
         <p className="challenge-time">
